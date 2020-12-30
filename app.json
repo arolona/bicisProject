@@ -1,0 +1,12 @@
+{
+  "name": "bicisProject",
+  "displayName": "bicisProject",
+  "expo": {
+    "name": "bicisProject",
+    "slug": "bicisProject",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}

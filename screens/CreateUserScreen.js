@@ -30,6 +30,7 @@ const CreateUserScreen = (props) => {
           name: state.name,
           email: state.email,
           phone: state.phone,
+          bicis: state.bicis
         });
         console.log("GUARDADO");
         props.navigation.navigate("UsersList");

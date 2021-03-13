@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
   Alert,
 } from "react-native";
+import { ListItem, Avatar } from "react-native-elements";
 import firebase from "../database/firebase";
 
 const UserDetailScreen = (props) => {
@@ -16,6 +17,7 @@ const UserDetailScreen = (props) => {
     name: "",
     email: "",
     phone: "",
+    bicis: {},
     id: "",
   }
   const [user, setUser] = useState(initialState);
@@ -54,6 +56,7 @@ const UserDetailScreen = (props) => {
       name: user.name,
       email: user.email,
       phone: user.phone,
+      bicis: user.bicis
     })
     setUser(initialState);
     props.navigation.navigate('UsersList');
@@ -72,6 +75,29 @@ const UserDetailScreen = (props) => {
         <ActivityIndicator size="large" color="#9e9e9e" />
       </View>
     );
+  }
+  var listBicis = "";
+  if (user.bicis != null) {
+    listBicis = Object.keys(user.bicis).map(function(i) {
+      return (
+        <ListItem
+          key={i}
+          bottomDivider
+          onPress={ () => {
+            props.navigation.navigate("BicisDetailScreen", {
+                userId: i
+            });
+          }}
+        >
+          <ListItem.Chevron />
+          <ListItem.Content>
+            <ListItem.Title>{user.bicis[i].marca}</ListItem.Title>
+            <ListItem.Subtitle>{user.bicis[i].color}</ListItem.Subtitle>
+          </ListItem.Content>
+        </ListItem>
+      );
+    });
+    console.log(listBicis);
   }
 
   return (
@@ -97,6 +123,7 @@ const UserDetailScreen = (props) => {
           onChangeText={(value) => handleChangeText("phone", value)}
         />
       </View>
+      <View>{ listBicis }</View>      
       <View>
         <Button
           color="#19ac52"

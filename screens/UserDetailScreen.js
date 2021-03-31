@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import {} from "react-native";
 import {
   View,
   StyleSheet,
@@ -8,6 +7,7 @@ import {
   Button,
   ActivityIndicator,
   Alert,
+  Dimensions,
 } from "react-native";
 import { ListItem, Avatar } from "react-native-elements";
 import firebase from "../database/firebase";
@@ -19,7 +19,7 @@ const UserDetailScreen = (props) => {
     phone: "",
     bicis: {},
     id: "",
-  }
+  };
   const [user, setUser] = useState(initialState);
 
   const [loading, setLoading] = useState(true);
@@ -43,30 +43,34 @@ const UserDetailScreen = (props) => {
   };
 
   const deleteUser = async () => {
-    const dbRef = firebase.db
-      .collection("users")
-      .doc(user.id);
+    const dbRef = firebase.db.collection("users").doc(user.id);
     await dbRef.delete();
     props.navigation.navigate("UsersList");
   };
 
   const updateUser = async () => {
-    const dbRef = firebase.db.collection('users').doc(user.id);
+    const dbRef = firebase.db.collection("users").doc(user.id);
     await dbRef.set({
       name: user.name,
       email: user.email,
       phone: user.phone,
-      bicis: user.bicis
-    })
+      bicis: user.bicis,
+    });
     setUser(initialState);
-    props.navigation.navigate('UsersList');
-  }
+    props.navigation.navigate("UsersList");
+  };
+
+  const addBici = () => {
+    props.navigation.navigate("CreateBiciScreen", {
+      screen: "UserDetailScreen",
+    });
+  };
 
   const confirmationDelete = () => {
-    Alert.alert('Eliminar el usuario', '¿Estas seguro?', [
-      {text: 'Si', onPress: () => deleteUser()},
-      {text: 'No', onPress: () => console.log("Cancelado")}
-    ])
+    Alert.alert("Eliminar el usuario", "¿Estas seguro?", [
+      { text: "Si", onPress: () => deleteUser() },
+      { text: "No", onPress: () => console.log("Cancelado") },
+    ]);
   };
 
   if (loading) {
@@ -78,26 +82,38 @@ const UserDetailScreen = (props) => {
   }
   var listBicis = "";
   if (user.bicis != null) {
-    listBicis = Object.keys(user.bicis).map(function(i) {
+    listBicis = Object.keys(user.bicis).map(function (i) {
       return (
         <ListItem
           key={i}
           bottomDivider
-          onPress={ () => {
+          onPress={() => {
             props.navigation.navigate("BicisDetailScreen", {
-                userId: i
+              marco: i,
+              bici: user.bicis[i],
             });
           }}
         >
           <ListItem.Chevron />
           <ListItem.Content>
-            <ListItem.Title>{user.bicis[i].marca}</ListItem.Title>
+            <ListItem.Title>{i}</ListItem.Title>
+            <ListItem.Subtitle>{user.bicis[i].marca}</ListItem.Subtitle>
             <ListItem.Subtitle>{user.bicis[i].color}</ListItem.Subtitle>
           </ListItem.Content>
         </ListItem>
       );
     });
     console.log(listBicis);
+  }
+
+  if (props.route.params.bici != null) {
+    let marco = props.route.params.bici.marco;
+    delete props.route.params.bici.marco;
+    let bici = props.route.params.bici;
+    let bicis = user.bicis;
+    bicis[marco] = bici;
+    setUser({ ...user, ["bicis"]: bicis });
+    props.route.params.bici = null;
   }
 
   return (
@@ -123,29 +139,40 @@ const UserDetailScreen = (props) => {
           onChangeText={(value) => handleChangeText("phone", value)}
         />
       </View>
-      <View>{ listBicis }</View>      
-      <View>
+      <View style={styles.bicis}>{listBicis}</View>
+      <View style={styles.bottom}>
         <Button
+          style={styles.button}
           color="#19ac52"
-          title="Editar Usuario"
+          title="Actualizar Usuario"
           onPress={() => updateUser()}
         />
-      </View>
-      <View>
         <Button
+          style={styles.button}
           color="#e37399"
           title="Eliminar Usuario"
           onPress={() => deleteUser()}
+        />
+        <Button
+          style={styles.button}
+          color="#506388"
+          title="Añadir bici"
+          onPress={() => addBici()}
         />
       </View>
     </ScrollView>
   );
 };
 
+var deviceWidth = Dimensions.get("window").width;
+var deviceHeight = Dimensions.get("window").height;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: "column",
     padding: 35,
+    height: deviceHeight, //* percentageYouWant / 100
   },
   inputGroup: {
     flex: 1,
@@ -153,6 +180,18 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     borderBottomWidth: 1,
     borderBottomColor: "#cccccc",
+  },
+  button: {
+    position: "absolute",
+    bottom: 0,
+  },
+  bottom: {
+    flex: 1,
+    justifyContent: "flex-end",
+    marginBottom: 36,
+  },
+  bicis: {
+    flex: 2,
   },
 });
 

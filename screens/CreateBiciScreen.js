@@ -18,7 +18,7 @@ const CreateBiciScreen = (props) => {
       console.log("Pon tu puto marco");
     } else {
       try {
-        props.navigation.navigate("CreateUserScreen", {
+        props.navigation.navigate(props.route.params.screen, {
           bici: biciState,
         });
       } catch (error) {

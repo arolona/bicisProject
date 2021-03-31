@@ -10,6 +10,8 @@ import UsersList from "./screens/UsersList";
 import CreateUserScreen from "./screens/CreateUserScreen";
 import UserDetailScreen from "./screens/UserDetailScreen";
 import CreateBiciScreen from "./screens/CreateBiciScreen";
+import BicisDetailScreen from "./screens/BicisDetailScreen";
+import NotificationsTest from "./screens/NotificationsTest";
 
 function MyStack() {
   return (
@@ -33,6 +35,16 @@ function MyStack() {
         name="UserDetailScreen"
         component={UserDetailScreen}
         options={{ title: "Detalle de usuario" }}
+      />
+      <Stack.Screen
+        name="BicisDetailScreen"
+        component={BicisDetailScreen}
+        options={{ title: "Detalle de bici" }}
+      />
+      <Stack.Screen
+        name="NotificationsTest"
+        component={NotificationsTest}
+        options={{ title: "Notificaciones" }}
       />
     </Stack.Navigator>
   );

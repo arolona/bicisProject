@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Button, TextInput, ScrollView, StyleSheet } from "react-native";
+import { ListItem, Avatar } from "react-native-elements";
 import firebase from "../database/firebase";
 
 const CreateUserScreen = (props) => {
@@ -51,14 +52,36 @@ const CreateUserScreen = (props) => {
   }    
 
   const addBici = () => {
-    // console.log(state.bicis);
-    // setState({ ...state, bicis: state.bicis(initialBici) });
-    // console.log(state);
-    state.newBici = true;
     props.navigation.navigate("CreateBiciScreen", {
-      state: state,
+      screen: "CreateUserScreen",
     });
   };
+
+  var listBicis = "";
+  if (state.bicis != null) {
+    listBicis = Object.keys(state.bicis).map(function (i) {
+      return (
+        <ListItem
+          key={i}
+          bottomDivider
+          onPress={() => {
+            props.navigation.navigate("BicisDetailScreen", {
+              marco: i,
+              bici: state.bicis[i],
+            });
+          }}
+        >
+          <ListItem.Chevron />
+          <ListItem.Content>
+            <ListItem.Title>{i}</ListItem.Title>
+            <ListItem.Subtitle>{state.bicis[i].marca}</ListItem.Subtitle>
+            <ListItem.Subtitle>{state.bicis[i].color}</ListItem.Subtitle>
+          </ListItem.Content>
+        </ListItem>
+      );
+    });
+    console.log(listBicis);
+  }
 
   return (
     <ScrollView style={styles.container}>
@@ -80,6 +103,7 @@ const CreateUserScreen = (props) => {
           onChangeText={(value) => handleChangeText("phone", value)}
         />
       </View>
+      <View >{listBicis}</View>
       <View>
         <Button title="Crear Usuario" onPress={() => saveNewUser()} />
       </View>

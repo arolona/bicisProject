@@ -28,6 +28,10 @@ const UsersList = (props) => {
         title="Crear usuario"
         onPress={() => props.navigation.navigate("CreateUserScreen", {bici: null})}
       ></Button>
+      <Button
+        title="Notificaciones"
+        onPress={() => props.navigation.navigate("NotificationsTest")}
+      ></Button>
 
       {users.map((user) => {
         return (

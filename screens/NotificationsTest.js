@@ -98,3 +98,6 @@ async function registerForPushNotificationsAsync() {
 
   return token;
 }
+
+
+//export default NotificationsTest;

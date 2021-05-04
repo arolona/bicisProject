@@ -9,6 +9,8 @@ import {
 } from "react-native";
 import firebase from "../database/firebase";
 import { ListItem, Avatar } from "react-native-elements";
+import bici_img from "../recursos/bici_flaca.png"
+
 
 const UsersList = (props) => {
   const [users, setUsers] = useState([]);
@@ -47,7 +49,7 @@ const UsersList = (props) => {
           rounded
           source={{
             uri:
-              "https://images.clarin.com/2020/08/16/avatar-the-last-airbender-foto___pck4_8liS_340x340__1.jpg",
+              "",
           }}
         />
         <ListItem.Content>
@@ -59,9 +61,11 @@ const UsersList = (props) => {
   });
 
   const image = {
-    uri:
-      "https://i.pinimg.com/originals/07/d4/ac/07d4acc79bd9662ded0bc75fb5fc3e3f.jpg",
+    uri:bici_img,
+      //"https://i.pinimg.com/originals/07/d4/ac/07d4acc79bd9662ded0bc75fb5fc3e3f.jpg",
   };
+
+  
   return (
     <ImageBackground source={image} style={styles.image}>
       <View style={{ flex: 1 }}>

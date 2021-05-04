@@ -6,11 +6,13 @@ import {
   ScrollView,
   Button,
   ActivityIndicator,
+  ImageBackground,
   Alert,
   Dimensions
 } from "react-native";
 import { ListItem, Avatar } from "react-native-elements";
 import firebase from "../database/firebase";
+import bici_img from "../recursos/bici_rueda.png"
 
 const BicisDetailScreen = (props) => {
   const initialState = {
@@ -65,7 +67,14 @@ const BicisDetailScreen = (props) => {
     );
   }
 
+
+  const image = {
+    uri:bici_img,
+      //"https://i.pinimg.com/originals/07/d4/ac/07d4acc79bd9662ded0bc75fb5fc3e3f.jpg",
+  };
+
   return (
+    <ImageBackground source={image} style={styles.image}>
     <ScrollView style={styles.container}>
       <View style={styles.inputGroup}>
         <TextInput
@@ -96,6 +105,7 @@ const BicisDetailScreen = (props) => {
         /> */}
       </View>
     </ScrollView>
+    </ImageBackground>
   );
 };
 
@@ -115,6 +125,11 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     borderBottomWidth: 1,
     borderBottomColor: "#cccccc",
+  },
+  image: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
   },
   button: {
     position: "absolute",

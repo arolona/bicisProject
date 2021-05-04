@@ -6,11 +6,13 @@ import {
   ScrollView,
   Button,
   ActivityIndicator,
+  ImageBackground,
   Alert,
   Dimensions,
 } from "react-native";
 import { ListItem, Avatar } from "react-native-elements";
 import firebase from "../database/firebase";
+import bici_img from "../recursos/bici_disco.png"
 
 const UserDetailScreen = (props) => {
   const initialState = {
@@ -81,9 +83,16 @@ const UserDetailScreen = (props) => {
     );
   }
   var listBicis = "";
+
+  const image = {
+    uri:bici_img,
+      //"https://i.pinimg.com/originals/07/d4/ac/07d4acc79bd9662ded0bc75fb5fc3e3f.jpg",
+  };
+
   if (user.bicis != null) {
     listBicis = Object.keys(user.bicis).map(function (i) {
       return (
+        
         <ListItem
           key={i}
           bottomDivider
@@ -93,6 +102,8 @@ const UserDetailScreen = (props) => {
               bici: user.bicis[i],
             });
           }}
+          containerStyle={{ backgroundColor: "#ffeeeed9" }}//'rgba(52, 52, 52, 0.8)' otra forma de backgroud ultimo parametro opacidad
+          
         >
           <ListItem.Chevron />
           <ListItem.Content>
@@ -101,6 +112,8 @@ const UserDetailScreen = (props) => {
             <ListItem.Subtitle>{user.bicis[i].color}</ListItem.Subtitle>
           </ListItem.Content>
         </ListItem>
+
+        
       );
     });
     console.log(listBicis);
@@ -117,9 +130,11 @@ const UserDetailScreen = (props) => {
   }
 
   return (
+    <ImageBackground source={image} style={styles.image}>
     <ScrollView style={styles.container}>
       <View style={styles.inputGroup}>
         <TextInput
+        style={styles.textInput} 
           placeholder="Nombre"
           value={user.name}
           onChangeText={(value) => handleChangeText("name", value)}
@@ -127,6 +142,7 @@ const UserDetailScreen = (props) => {
       </View>
       <View style={styles.inputGroup}>
         <TextInput
+          style={styles.textInput} 
           placeholder="Email"
           value={user.email}
           onChangeText={(value) => handleChangeText("email", value)}
@@ -134,16 +150,17 @@ const UserDetailScreen = (props) => {
       </View>
       <View style={styles.inputGroup}>
         <TextInput
+          style={styles.textInput} 
           placeholder="Celular"
           value={user.phone}
           onChangeText={(value) => handleChangeText("phone", value)}
         />
       </View>
       <View style={styles.bicis}>{listBicis}</View>
-      <View style={styles.bottom}>
+      <View style={styles.btn}>
         <Button
-          style={styles.button}
-          color="#19ac52"
+          style={styles.btn}
+          //color="#19ac52"
           title="Actualizar Usuario"
           onPress={() => updateUser()}
         />
@@ -161,6 +178,7 @@ const UserDetailScreen = (props) => {
         />
       </View>
     </ScrollView>
+    </ImageBackground>
   );
 };
 
@@ -174,6 +192,11 @@ const styles = StyleSheet.create({
     padding: 35,
     height: deviceHeight, //* percentageYouWant / 100
   },
+  image: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
+  },
   inputGroup: {
     flex: 1,
     padding: 0,
@@ -185,6 +208,9 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
   },
+  textInput: {
+    color: 'white',
+   },
   bottom: {
     flex: 1,
     justifyContent: "flex-end",
@@ -193,6 +219,24 @@ const styles = StyleSheet.create({
   bicis: {
     flex: 2,
   },
+  btn: {
+    marginTop: 5,
+    paddingVertical: 8,
+    borderWidth: 1,
+    borderColor: "#20232a66",
+    borderRadius: 25,
+    backgroundColor: "#fb6161f2",
+    color: "#dcdde0",
+    textAlign: "center",
+    fontSize: 15,
+    fontWeight: "bold",
+    marginHorizontal: 10,
+  },
+
 });
+
+
+
+
 
 export default UserDetailScreen;
